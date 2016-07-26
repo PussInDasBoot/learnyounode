@@ -6,18 +6,43 @@ for (var bankroll = 100; bankroll > 0; bankroll){
   console.log(compNumber);
   switch(number) {
     case compNumber:
-        bankroll += bet;
-        alert(`Congratulations you won! You now have $${bankroll}.`)
-        break;
+      bankroll += bet;
+      alert(`Congratulations you won! You now have $${bankroll}.`)
+      break;
     case compNumber + 1:
-        alert(`Close you were off by one! You now have $${bankroll}.`)
-        break;
+      // case flow-throw on purpose!
     case compNumber - 1:
-        alert(`Close you were off by one! You now have $${bankroll}.`)
-        break;
+      alert(`Close you were off by one! You now have $${bankroll}.`)
+      break;
     default:
-        bankroll -= bet;
-        alert(`Sorry you didn't win this time! You now have $${bankroll}.`)
+      bankroll -= bet;
+      alert(`Sorry you didn't win this time! You now have $${bankroll}.`)
   }
 }
 
+
+
+  switch(Math.abs(compNumber - number)) {
+    case 0:
+      bankroll += bet;
+      alert(`Congratulations you won! You now have $${bankroll}.`)
+      break;
+    case 1:
+      alert(`Close you were off by one! You now have $${bankroll}.`)
+      break;
+    default:
+      bankroll -= bet;
+      alert(`Sorry you didn't win this time! You now have $${bankroll}.`)
+  }
+
+$(document).ready(function(){
+  var $bet = $('#bet');
+  $('#betting-form').on('submit', function(event){
+    event.preventDefault();
+    // var bet = +$(this).closest('form').find('#bet').val();
+    var bet = +$bet.val();
+    console.log(bet);
+    // $(this).closest('body').find('p').text(bet);
+    $('#output_para').text(bet);
+  })
+})
