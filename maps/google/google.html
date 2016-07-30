@@ -1,27 +1,127 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>Google</title>
-  <script src='jquery-3.1.0.min.js'></script>
-  <script src='application.js'></script>
-  <link rel="stylesheet" href="application.css">
-
-</head>
-  <body>
-
-  <div id="map"></div>
-    <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
-        });
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Info windows</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
       }
+      #map {
+        height: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="jquery-3.1.0.min.js"></script>
+    <script src="application.js"></script>
+    <script>
+    function initMap() {
+    var chillWinston = {lat: 49.283609, lng: -123.103978};
+        
+    var CWwindow = '<div id="content">'+
+        'Yum yum in my tum'
+        +'</div>';
+
+    var Taqueria = {lat: 49.282974, lng: -123.110502};
+    
+    var Twindow = '<div id="content">'+
+        'Taco taco taco'
+        +'</div>';
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 14,
+      center: chillWinston
+    });
+
+    var CWinfowindow = new google.maps.InfoWindow({
+      content: CWwindow
+    });
+
+    var CWmarker = new google.maps.Marker({
+      position: chillWinston,
+      map: map,
+      title: 'Chill Winston'
+    });
+
+    CWmarker.addListener('click', function() {
+      CWinfowindow.open(map, CWmarker);
+    });
+
+    var Tinfowindow = new google.maps.InfoWindow({
+      content: Twindow
+    });
+
+    var Tmarker = new google.maps.Marker({
+      position: Taqueria,
+      map: map,
+      title: 'Taqueria'
+    });
+
+    Tmarker.addListener('click', function() {
+      Tinfowindow.open(map, Tmarker);
+    });
+
+    $('#chill').on('click', function(){
+      if(document.getElementById('chill').checked) {
+      CWmarker.setVisible(true);
+      } else {
+        CWmarker.setVisible(false);
+      }    
+    })
+
+    $('#taqueria').on('click', function(){
+      if(document.getElementById('taqueria').checked) {
+      Tmarker.setVisible(true);
+      } else {
+        Tmarker.setVisible(false);
+      }    
+    })
+
+    var infoWindow = new google.maps.InfoWindow({map: map});
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Location found.');
+        map.setCenter(pos);
+      }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+  }
+
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+      'Error: The Geolocation service failed.' :
+      'Error: Your browser doesn\'t support geolocation.');
+
+  }
+        
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvDbqxTA2yh_qtdmQapEzRbWFeT4GNA9w&callback=initMap">
-</script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvDbqxTA2yh_qtdmQapEzRbWFeT4GNA9w&callback=initMap">
+    </script>
+    <ul>
+      <li>Chill Winston <input type="checkbox" name="chill" id="chill" checked><br></li>
+      <li>Taqueria<input type="checkbox" name="taqueria" id="taqueria" checked><br></li>
+    </ul>
+    <script>
+    </script>
+    
   </body>
 </html>
